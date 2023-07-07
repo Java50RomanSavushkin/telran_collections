@@ -2,22 +2,56 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
+@SuppressWarnings("unchecked")
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size = 0;
-	@SuppressWarnings("unchecked")
+
+	private class ArrayListIterator implements Iterator<T> {
+		int currentIndex = 0;
+		boolean flNext = false;
+
+		@Override
+		public boolean hasNext() {
+
+			return currentIndex < size;
+		}
+
+		@Override
+		public T next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			flNext = true;
+			return array[currentIndex++];
+		}
+
+		@Override
+		public void remove() {
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			ArrayList.this.remove(--currentIndex);
+			flNext = false;
+		}
+
+	}
+
 	public ArrayList(int capacity) {
 		array = (T[]) new Object[capacity];
 	}
+
 	public ArrayList() {
 		this(DEFAULT_CAPACITY);
 	}
+
 	@Override
 	public boolean add(T obj) {
-		if(size == array.length) {
+		if (size == array.length) {
 			reallocate();
 		}
 		array[size++] = obj;
@@ -26,73 +60,63 @@ public class ArrayList<T> implements List<T> {
 
 	private void reallocate() {
 		array = Arrays.copyOf(array, array.length * 2);
-		
-	}
-	@Override
-	public boolean remove(Object pattern) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public T[] toArray(T[] ar) {
-		T[] res = ar.length < size ? Arrays.copyOf(ar, size) : ar;
-		int index = 0;
-		for(T obj: this) {
-			res[index++] = obj;
-		}
-		if(res.length > size) {
-			res[size] = null;
-		}
-		return res;
 	}
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return false;
+		int oldSize = size;
+		int indexDest = 0;
+		for (int indexSrc = 0; indexSrc < oldSize; indexSrc++) {
+			if (predicate.test(array[indexSrc])) {
+				size--;
+			} else {
+				array[indexDest++] = array[indexSrc];
+			}
+		}
+		for (int i = size; i < oldSize; i++) {
+			array[i] = null;
+		}
+		return oldSize > size;
+
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public boolean addAll(Collection<T> collection) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAll(Collection<T> collection) {
-		// TODO Auto-generated method stub
-		return false;
+		return size;
 	}
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return new ArrayListIterator();
 	}
 
 	@Override
 	public void add(int index, T obj) {
-		// TODO Auto-generated method stub
+		indexValidation(index, true);
+		if (size == array.length) {
+			reallocate();
+		}
+		System.arraycopy(array, index, array, index + 1, size - index);
+		array[index] = obj;
+		size++;
 
 	}
 
 	@Override
 	public T get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		indexValidation(index, false);
+		return array[index];
 	}
 
 	@Override
 	public T set(int index, T obj) {
-		// TODO Auto-generated method stub
-		return null;
+
+		T res = get(index);
+		array[index] = obj;
+		return res;
 	}
 
 	@Override
@@ -106,35 +130,42 @@ public class ArrayList<T> implements List<T> {
 		return res;
 	}
 
-	private void indexValidation(int index, boolean sizeInclusive) {
-		int bounder = sizeInclusive ? size : size - 1;
-		if (index < 0 || index > bounder ) {
-			throw new IndexOutOfBoundsException(index);
-		}
-		
-	}
 	@Override
-	public int indexOf(T pattern) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int indexOf(Object pattern) {
+
+		return indexOf(Predicate.isEqual(pattern));
 	}
 
 	@Override
-	public int lastIndexOf(T pattern) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int lastIndexOf(Object pattern) {
+
+		return lastIndexOf(Predicate.isEqual(pattern));
 	}
 
 	@Override
 	public int indexOf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return 0;
+		int res = -1;
+		int index = 0;
+		while (index < size && res == -1) {
+			if (predicate.test(array[index])) {
+				res = index;
+			}
+			index++;
+		}
+		return res;
 	}
 
 	@Override
 	public int lastIndexOf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return 0;
+		int res = -1;
+		int index = size - 1;
+		while (index >= 0 && res == -1) {
+			if (predicate.test(array[index])) {
+				res = index;
+			}
+			index--;
+		}
+		return res;
 	}
 
 }
