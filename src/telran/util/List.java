@@ -12,7 +12,7 @@ public interface List<T> extends Collection<T> {
 	T remove(int index);
 
 	int indexOf(Object pattern);
-
+ 
 	int lastIndexOf(Object pattern);
 
 	int indexOf(Predicate<T> predicate);
@@ -41,7 +41,7 @@ public interface List<T> extends Collection<T> {
 		if (index < 0 || index > bounder) {
 			throw new IndexOutOfBoundsException(index);
 		}
-
+ 
 	}
 
 }

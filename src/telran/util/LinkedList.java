@@ -64,7 +64,6 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public int size() {
-
 		return size;
 	}
 
@@ -112,14 +111,23 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T obj) {
-		// TODO Auto-generated method stub
-		return null;
+//		Node<T> oldValue = getNode(index);
+//		Node<T> oldNext = oldValue.next;
+//		Node<T> oldPrev = oldValue.prev;
+		remove(index);
+		add(index, obj);
+		return (getNode(index)).obj;
 	}
-
+ 
 	@Override
 	public T remove(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		Node<T> toBeRemoved = getNode(index);
+		Node<T> next = toBeRemoved.next;
+		Node<T> prev = toBeRemoved.prev;
+		prev.next = next;
+		next.prev = prev;
+		size--;
+		return toBeRemoved.obj;
 	}
 
 	@Override
