@@ -111,14 +111,12 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T obj) {
-//		Node<T> oldValue = getNode(index);
-//		Node<T> oldNext = oldValue.next;
-//		Node<T> oldPrev = oldValue.prev;
+		T res = (getNode(index)).obj;
 		remove(index);
 		add(index, obj);
-		return (getNode(index)).obj;
+		return res;
 	}
- 
+
 	@Override
 	public T remove(int index) {
 		Node<T> toBeRemoved = getNode(index);
