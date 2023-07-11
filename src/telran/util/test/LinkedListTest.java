@@ -12,11 +12,10 @@ public class LinkedListTest extends ListTest {
 		collection = new LinkedList<Integer>();
 		super.setUp();
 	}
-
 	@Override
 	protected Collection<Integer> getCollection(Integer[] ar) {
 		LinkedList<Integer> res = new LinkedList<>();
-		for (Integer num : ar) {
+		for(Integer num: ar) {
 			res.add(num);
 		}
 		return res;
