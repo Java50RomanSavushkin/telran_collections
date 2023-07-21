@@ -99,7 +99,7 @@ public class HashSet<T> implements Set<T> {
 			size++;
 			res = true;
 		}
-		
+
 		return res;
 	}
 

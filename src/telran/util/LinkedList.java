@@ -9,44 +9,49 @@ public class LinkedList<T> implements List<T> {
 		T obj;
 		Node<T> next;
 		Node<T> prev;
+
 		Node(T obj) {
 			this.obj = obj;
 		}
 	}
+
 	Node<T> head;
 	Node<T> tail;
 	int size;
+
 	private class LinkedListIterator implements Iterator<T> {
 		Node<T> current = head;
 		boolean flNext = false;
-			@Override
-			public boolean hasNext() {
-				
-				return current != null;
-			}
 
-			@Override
-			public T next() {
-				if (!hasNext()) {
-					throw new NoSuchElementException();
-				}
-				T res = current.obj;
-				current = current.next;
-				flNext = true;
-				return res;
-			}
-			@Override
-			public void remove() {
-				if (!flNext) {
-					throw new IllegalStateException();
-				}
-				Node<T> removedNode = current != null ? current.prev : tail;
-				removeNode(removedNode);
-				flNext = false;
-			}
-			
-			
+		@Override
+		public boolean hasNext() {
+
+			return current != null;
 		}
+
+		@Override
+		public T next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T res = current.obj;
+			current = current.next;
+			flNext = true;
+			return res;
+		}
+
+		@Override
+		public void remove() {
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			Node<T> removedNode = current != null ? current.prev : tail;
+			removeNode(removedNode);
+			flNext = false;
+		}
+
+	}
+
 	@Override
 	public boolean add(T obj) {
 		Node<T> node = new Node<>(obj);
@@ -55,9 +60,9 @@ public class LinkedList<T> implements List<T> {
 	}
 
 	private void removeNode(Node<T> removedNode) {
-		if(removedNode == head) {
+		if (removedNode == head) {
 			removeHead();
-		} else if(removedNode == tail) {
+		} else if (removedNode == tail) {
 			removeTail();
 		} else {
 			removeMiddle(removedNode);
@@ -68,11 +73,11 @@ public class LinkedList<T> implements List<T> {
 	private void removeMiddle(Node<T> removedNode) {
 		Node<T> prevNode = removedNode.prev;
 		Node<T> nextNode = removedNode.next;
-		removedNode.prev = removedNode.next  = null;
+		removedNode.prev = removedNode.next = null;
 		removedNode.obj = null;
 		prevNode.next = nextNode;
 		nextNode.prev = prevNode;
-		
+
 	}
 
 	private void removeTail() {
@@ -81,12 +86,11 @@ public class LinkedList<T> implements List<T> {
 		tail.prev = null;
 		prevTail.next = null;
 		tail = prevTail;
-		
-		
+
 	}
 
 	private void removeHead() {
-		if(head == tail) {
+		if (head == tail) {
 			head = tail = null;
 		} else {
 			Node<T> nextHead = head.next;
@@ -95,12 +99,12 @@ public class LinkedList<T> implements List<T> {
 			head = nextHead;
 			nextHead.prev = null;
 		}
-		
+
 	}
 
 	private void addNode(int index, Node<T> node) {
-		
-		if(index == size) {
+
+		if (index == size) {
 			addTail(node);
 		} else if (index == 0) {
 			addHead(node);
@@ -108,25 +112,25 @@ public class LinkedList<T> implements List<T> {
 			addMiddle(index, node);
 		}
 		size++;
-		
+
 	}
 
 	private void addMiddle(int index, Node<T> node) {
-		
+
 		Node<T> nextNode = getNode(index);
 		Node<T> prevNode = nextNode.prev;
 		node.next = nextNode;
 		nextNode.prev = node;
 		prevNode.next = node;
 		node.prev = prevNode;
-		
+
 	}
 
 	private void addHead(Node<T> node) {
 		node.next = head;
 		head.prev = node;
 		head = node;
-		
+
 	}
 
 	private void addTail(Node<T> node) {
@@ -141,7 +145,7 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public int size() {
-		
+
 		return size;
 	}
 
@@ -166,13 +170,13 @@ public class LinkedList<T> implements List<T> {
 	}
 
 	private Node<T> getNode(int index) {
-		
+
 		return index < size / 2 ? getNodeFromHead(index) : getNodeFromTail(index);
 	}
 
 	private Node<T> getNodeFromTail(int index) {
 		Node<T> current = tail;
-		for(int i = size - 1; i > index; i--) {
+		for (int i = size - 1; i > index; i--) {
 			current = current.prev;
 		}
 		return current;
@@ -180,7 +184,7 @@ public class LinkedList<T> implements List<T> {
 
 	private Node<T> getNodeFromHead(int index) {
 		Node<T> current = head;
-		for(int i = 0; i < index; i++) {
+		for (int i = 0; i < index; i++) {
 			current = current.next;
 		}
 		return current;
@@ -203,8 +207,6 @@ public class LinkedList<T> implements List<T> {
 		removeNode(node);
 		return res;
 	}
-
-	
 
 	@Override
 	public int indexOf(Predicate<T> predicate) {

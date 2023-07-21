@@ -10,11 +10,12 @@ public class ArrayListTest extends ListTest {
 	@Override
 	protected Collection<Integer> getCollection(Integer[] ar1) {
 		ArrayList<Integer> arrayList = new ArrayList<>();
-		for(Integer num: ar1) {
+		for (Integer num : ar1) {
 			arrayList.add(num);
 		}
 		return arrayList;
 	}
+
 	@BeforeEach
 	@Override
 	void setUp() {

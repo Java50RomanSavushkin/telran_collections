@@ -20,7 +20,7 @@ public class HashSetTest extends SetTest {
 	@Override
 	protected Collection<Integer> getCollection(Integer[] ar) {
 		HashSet<Integer> res = new HashSet<>(200000);
-		for(Integer num: ar) {
+		for (Integer num : ar) {
 			res.add(num);
 		}
 		return res;
