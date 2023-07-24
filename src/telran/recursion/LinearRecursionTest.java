@@ -35,6 +35,7 @@ class LinearRecursionTest {
 		assertThrowsExactly(IllegalArgumentException.class, () -> factorial(-6));
 		assertEquals(6, factorial(3));
 		assertEquals(24, factorial(4));
+		assertEquals(120, factorial(5));
 	}
 
 	@Test
@@ -47,14 +48,14 @@ class LinearRecursionTest {
 
 	@Test
 	void displayArrayTest() {
-		System.out.println("\nDiaplaying range [1-5]");
+		System.out.println("\nDisplaying range [1-5]");
 		int ar[] = { 1, 2, 3, 4, 5 };
 		displayArray(ar);
 	}
 
 	@Test
 	void displayArrayReverseTest() {
-		System.out.println("\nDiaplaying reversed range [1-5]");
+		System.out.println("\nDisplaying reversed range [1-5]");
 		int ar[] = { 1, 2, 3, 4, 5 };
 		displayReversedArray(ar);
 	}
@@ -77,6 +78,8 @@ class LinearRecursionTest {
 	void squareTest() {
 		assertEquals(100, square(10));
 		assertEquals(100, square(-10));
+		assertEquals(1, square(1));
+		assertEquals(0, square(0));
 	}
 
 	@Test
@@ -89,5 +92,7 @@ class LinearRecursionTest {
 		assertFalse(isSubstring(str, "bok"));
 		assertFalse(isSubstring(str, "loko"));
 	}
+
+	
 
 }
