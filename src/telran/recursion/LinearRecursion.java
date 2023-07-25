@@ -5,6 +5,7 @@ public class LinearRecursion {
 		if (a > 3) {
 			function(a - 1);
 		}
+
 	}
 
 	public static long factorial(int n) {
@@ -16,40 +17,34 @@ public class LinearRecursion {
 			res = n * factorial(n - 1);
 		}
 		return res;
+
 	}
 
 	public static long pow(int a, int b) {
-		long res = 1;
+
+		// HW #17 definition
+		// Write method pow with following limitations
+		// No cycles
+		// Arithmetic operations allowed +; - only
+		// if Additional functions applied then only with the same limitations
 		if (b < 0) {
-			throw new IllegalArgumentException("degree cannot be a negative");
+			throw new IllegalArgumentException();
 		}
+		long res = 1;
 		if (b > 0) {
-			// res = a * pow(a, b - 1);
 			res = multiply(a, pow(a, b - 1));
 		}
 		return res;
 	}
 
-	public static int multiply(int a, long b) {
-		if (a == 0 || b == 0) {
-			return 0;
+	private static int multiply(int a, long b) {
+
+		int res = 0;
+		if (b != 0) {
+			res = b < 0 ? multiply(-a, -b) : a + multiply(a, b - 1);
 		}
-		boolean negativeResult = false;
-		if (a < 0 && b < 0) {
-			a = -a;
-			b = -b;
-		} else if (a < 0) {
-			a = -a;
-			negativeResult = true;
-		} else if (b < 0) {
-			b = -b;
-			negativeResult = true;
-		}
-		int result = a + multiply(a, b - 1);
-		if (negativeResult) {
-			result = -result;
-		}
-		return result;
+
+		return res;
 	}
 
 	public static void displayArray(int[] ar) {
@@ -66,6 +61,7 @@ public class LinearRecursion {
 				displayArray(index + 1, ar, isReverse);
 			}
 		}
+
 	}
 
 	public static void displayReversedArray(int[] ar) {
@@ -99,34 +95,54 @@ public class LinearRecursion {
 	}
 
 	public static int square(int x) {
-		if (x == 0) {
-			return 0;
-		} else if (x < 0) {
-			x = -x;
+		// returns x ^ 2
+		// With following limitations
+		// No cycles
+		// No any additional methods
+		// No static fields
+		// Only + ; - arithmetic operations
+		int res = 0;
+		if (x != 0) {
+			res = x < 0 ? square(-x) : x + x - 1 + square(x - 1);
 		}
-		return x + square(x - 1) + x - 1;
+
+		return res;
 	}
 
 	public static boolean isSubstring(String string, String substr) {
-		return isSubstring(string, substr, 0, 0);
+
+		// TODO
+		// returns true if a given 'substr' is indeed the //substring of a given
+		// `string`
+
+		/*
+		 * Challenges: 1. To apply only following methods of the class String:
+		 * charAt(int ind);
+		 * 
+		 * String substring(int ind);
+		 * 
+		 * int length();
+		 * 
+		 * 2. No cycles;
+		 */
+
+		boolean res = false;
+		if (string.length() >= substr.length()) {
+			res = isEqual(string, substr) ? true : isSubstring(string.substring(1), substr);
+		}
+
+		return res;
+
 	}
 
-	private static boolean isSubstring(String string, String substr, int strIndex, int substrIndex) {
-		int strLength = string.length();
-		int substrLength = substr.length();
-		if (substrIndex == substrLength) {
-			return true;
+	private static boolean isEqual(String str, String substr) {
+		boolean res = false;
+		if (substr.length() == 0) {
+			res = true;
+		} else if (str.charAt(0) == substr.charAt(0)) {
+			res = isEqual(str.substring(1), substr.substring(1));
 		}
-		if (strIndex == strLength) {
-			return false;
-		}
-		char stringChar = string.charAt(strIndex);
-		char substrChar = substr.charAt(substrIndex);
-		if (stringChar == substrChar) {
-			return isSubstring(string, substr, strIndex + 1, substrIndex + 1);
-		} else {
-			return isSubstring(string, substr, strIndex + 1, 0);
-		}
-	}
 
+		return res;
+	}
 }
