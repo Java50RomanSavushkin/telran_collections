@@ -111,7 +111,7 @@ public class LinearRecursion {
 
 	public static boolean isSubstring(String string, String substr) {
 
-		// TODO
+		
 		// returns true if a given 'substr' is indeed the //substring of a given
 		// `string`
 
